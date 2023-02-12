@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="7b9965a5-6e91-4c16-9b4d-3904a65f8aa3" name="instainex" url="jdbc:mysql://localhost:3306/instainex?useSSL=false&amp;allowPublicKeyRetrieval=true" driverClass="com.mysql.cj.jdbc.Driver" />
+    </data-sources>
+  </component>
+</project>
