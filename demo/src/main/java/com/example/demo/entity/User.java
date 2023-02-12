@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userid")
@@ -37,7 +40,7 @@ public class User {
 
     @ElementCollection(targetClass = ERole.class)
     @CollectionTable(name = "id")
-    private Set<ERole> role = new HashSet<>();
+    private Set<ERole> roles = new HashSet<>();
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private Set<Post> posts = new HashSet<>();
@@ -61,5 +64,44 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
+
+    public User() {
+    }
+
+    public User(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }
